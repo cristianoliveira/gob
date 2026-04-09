@@ -218,6 +218,26 @@ jira issue list
 ```
 ````
 
+### Agent-friendly automation with JSON + jq
+
+Agents can pipe Gob's JSON output directly into `jq` to inspect job state, durations, and logs without parsing human-readable text. Use `--json` with `await`, `list`, `runs`, `stats`, or `ports`, then pull the fields you care about:
+
+```bash
+job_id=abc123
+
+gob await $job_id --json | jq '. | {
+  id: .job.id,
+  status: .job.status,
+  exit_code: .job.exit_code,
+  summary: .summary
+}'
+
+gob list --json | jq -r '.[] | "\(.id): \(.status)"'
+gob await $job_id --json | jq '.stdout'
+```
+
+These snippets let agents verify success, check durations, or assemble dashboards without needing to reinvent parsing logic. You can also use `jq` to count runs, inspect ports, or compare `stdout` against expected strings in automated checks.
+
 ## Interactive TUI
 
 Launch a full-screen terminal interface for managing jobs:
