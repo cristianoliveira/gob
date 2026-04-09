@@ -19,7 +19,7 @@ See [docs/nix.md](docs/nix.md) for details.
 
 ## Agent guidance
 
-- When you need to inspect jobs programmatically, append `--json` to commands like `gob await`, `list`, `runs`, `stats`, or `ports` and pipe the result through `jq`. This keeps your responses short and saves tokens because you only forward the structured values you need (exit codes, statuses, summaries, stdout, etc.).
-- Reuse the same JSON response across multiple checks with different `jq` filters instead of rerunning the command with full prose output.
-- Refer to the “Agent-friendly automation with JSON + jq” section in the README for examples you can copy into your workflows.
+- Prefer `gob … --json | jq …` (await, list, runs, stats, ports) so you only emit the exact fields you need (exit code, status, stdout, etc.).
+- Reuse a single JSON response with different `jq` filters rather than rerunning the command with verbose prose.
+- See the README “Agent-friendly automation with JSON + jq” section for copy-paste snippets.
 
